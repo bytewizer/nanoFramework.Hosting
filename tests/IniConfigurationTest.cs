@@ -42,9 +42,11 @@ namespace nanoFramework.Hosting.UnitTests
                         { "test:start", "started" },
                         { "test:stop", "stopped" }
                     });
-                });
+                }).Build();
 
-            host.Build();
+            var config = (IConfiguration)host.Services.GetService(typeof(IConfiguration));
+            
+            Assert.Equal("SqlClient", config["DefaultConnection:Provider"]);
         }
 
         [TestMethod]

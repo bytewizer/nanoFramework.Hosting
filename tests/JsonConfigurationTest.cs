@@ -19,9 +19,6 @@ namespace nanoFramework.Hosting.UnitTests
         [TestMethod]
         public void CanBuildValidJsonFromStreamProvider()
         {
-            var json = @"{""key1"":1,""key2"":""value2"",""object1"":{""property1"":""value1"",""property2"":[2,3,4,5,6,7]}}";
-            var jsonStream = StringToStream(json);
-
             var host = Host.CreateDefaultBuilder()
                 .ConfigureServices((context, services) =>
                 {
@@ -29,18 +26,26 @@ namespace nanoFramework.Hosting.UnitTests
                     Assert.Equal("3", context.Configuration["object1:property2:1"]);
                     Assert.Equal("started", context.Configuration["test:start"]);
                     Assert.Equal("stopped", context.Configuration["test:stop"]);
+                    
+                    context.Configuration["Key1"] = "NewValue1";
                 })
                 .ConfigureAppConfiguration((builder) =>
                 {
+                    var json = @"{""key1"":1,""key2"":""value2"",""object1"":{""property1"":""value1"",""property2"":[2,3,4,5,6,7]}}";
+
                     builder.AddJsonStream(StringToStream(json));
                     builder.AddInMemoryCollection(new Hashtable()
                     {
                         { "test:start", "started" },
                         { "test:stop", "stopped" }
                     });
-                });
+                }).Build();
 
-            host.Build();
+            var config = (IConfiguration)host.Services.GetService(typeof(IConfiguration));
+
+            Assert.Equal("NewValue1", config["key1"]);
+            Assert.Equal("5", config["object1:property2:3"]);
+            Assert.Equal("started", config["test:start"]);
         }
 
         [TestMethod]

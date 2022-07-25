@@ -140,11 +140,7 @@ namespace nanoFramework.Hosting.UnitTests
                         {"KEYA:KEYB", "valueB"}
                     })
                 .Build();
-            
-            //var newConfigurationRoot = new ConfigurationBuilder()
-            //    //.AddInMemoryCollection(configurationRoot.AsEnumerable())
-            //    .Build();
-            
+                        
             Assert.Equal("valueB", configurationRoot["keya:keyb"]);
         }
 

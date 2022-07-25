@@ -8,15 +8,15 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectTypeGuids>{11A8DD76-328B-46DF-9F39-F559912D0360};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <ProjectGuid>{AEEC4A38-FA56-4ACD-9DF5-E0BEA2D1263A}</ProjectGuid>
+    <ProjectGuid>{69A51433-BCFD-4529-8AF1-F71215E00CCB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <FileAlignment>512</FileAlignment>
-    <RootNamespace>nanoFramework.Hosting.Configuration.Streams</RootNamespace>
-    <AssemblyName>nanoFramework.Hosting.Configuration.Streams</AssemblyName>
+    <RootNamespace>nanoFramework.Hosting.Http</RootNamespace>
+    <AssemblyName>nanoFramework.Hosting.Http</AssemblyName>
     <TargetFrameworkVersion>v1.0</TargetFrameworkVersion>
     <NF_IsCoreLibrary>True</NF_IsCoreLibrary>
-    <DocumentationFile>bin\$(Configuration)\nanoFramework.Hosting.Configuration.Streams.xml</DocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\nanoFramework.Hosting.Http.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -29,13 +29,15 @@
   </PropertyGroup>
   <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.props" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.props')" />
   <ItemGroup>
-    <Compile Include="Configuration\StreamConfigurationSource.cs" />
-    <Compile Include="Configuration\StreamConfigurationProvider.cs" />
+    <Compile Include="Http\IHttpClientFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib">
       <HintPath>..\packages\nanoFramework.CoreLibrary.1.12.0\lib\mscorlib.dll</HintPath>
+    </Reference>
+    <Reference Include="nanoFramework.Runtime.Events">
+      <HintPath>..\packages\nanoFramework.Runtime.Events.1.10.0\lib\nanoFramework.Runtime.Events.dll</HintPath>
     </Reference>
     <Reference Include="nanoFramework.System.Collections">
       <HintPath>..\packages\nanoFramework.System.Collections.1.4.0\lib\nanoFramework.System.Collections.dll</HintPath>
@@ -46,13 +48,24 @@
     <Reference Include="System.IO.Streams">
       <HintPath>..\packages\nanoFramework.System.IO.Streams.1.0.1.1\lib\System.IO.Streams.dll</HintPath>
     </Reference>
+    <Reference Include="System.Net">
+      <HintPath>..\packages\nanoFramework.System.Net.1.9.0.8\lib\System.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+      <HintPath>..\packages\nanoFramework.System.Net.Http.Client.1.4.0.23\lib\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading">
+      <HintPath>..\packages\nanoFramework.System.Threading.1.0.4\lib\System.Threading.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\nanoFramework.DependencyInjection\nanoFramework.DependencyInjection\nanoFramework.DependencyInjection.nfproj" />
+    <ProjectReference Include="..\nanoFramework.Hosting.Configuration.Ini\nanoFramework.Hosting.Configuration.Ini.nfproj" />
     <ProjectReference Include="..\nanoFramework.Hosting.Configuration\nanoFramework.Hosting.Configuration.nfproj" />
+    <ProjectReference Include="..\nanoFramework.Hosting.Logging\nanoFramework.Hosting.Logging.nfproj" />
     <ProjectReference Include="..\nanoFramework.Hosting\nanoFramework.Hosting.nfproj" />
   </ItemGroup>
   <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.CSharp.targets" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.CSharp.targets')" />
