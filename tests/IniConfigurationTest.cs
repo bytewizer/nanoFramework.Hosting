@@ -29,10 +29,10 @@ namespace nanoFramework.Hosting.UnitTests
             var host = Host.CreateDefaultBuilder()
                 .ConfigureServices((context, services) =>
                 {
-                    Assert.Equal("AnotherTestConnectionString", context.Configuration["Data:Inventory:ConnectionString"]);
-                    Assert.Equal("TestConnectionString", context.Configuration["DefaultConnection:ConnectionString"]);
-                    Assert.Equal("started", context.Configuration["test:start"]);
-                    Assert.Equal("stopped", context.Configuration["test:stop"]);
+                    Assert.Equal("AnotherTestConnectionString", (string)context.Configuration["Data:Inventory:ConnectionString"]);
+                    Assert.Equal("TestConnectionString", (string)context.Configuration["DefaultConnection:ConnectionString"]);
+                    Assert.Equal("started", (string)context.Configuration["test:start"]);
+                    Assert.Equal("stopped", (string)context.Configuration["test:stop"]);
                 })
                 .ConfigureAppConfiguration((builder) =>
                 {
@@ -46,7 +46,7 @@ namespace nanoFramework.Hosting.UnitTests
 
             var config = (IConfiguration)host.Services.GetService(typeof(IConfiguration));
             
-            Assert.Equal("SqlClient", config["DefaultConnection:Provider"]);
+            Assert.Equal("SqlClient", (string)config["DefaultConnection:Provider"]);
         }
 
         [TestMethod]
@@ -63,10 +63,10 @@ namespace nanoFramework.Hosting.UnitTests
                 .AddIniStream(StringToStream(ini))
                 .Build();
 
-            Assert.Equal("TestConnectionString", config["DefaultConnection:ConnectionString"]);
-            Assert.Equal("SqlClient", config["DefaultConnection:Provider"]);
-            Assert.Equal("AnotherTestConnectionString", config["Data:Inventory:ConnectionString"]);
-            Assert.Equal("MySql", config["Data:Inventory:Provider"]);
+            Assert.Equal("TestConnectionString", (string)config["DefaultConnection:ConnectionString"]);
+            Assert.Equal("SqlClient", (string)config["DefaultConnection:Provider"]);
+            Assert.Equal("AnotherTestConnectionString", (string)config["Data:Inventory:ConnectionString"]);
+            Assert.Equal("MySql", (string)config["Data:Inventory:Provider"]);
         }
 
         [TestMethod]
@@ -83,10 +83,10 @@ namespace nanoFramework.Hosting.UnitTests
 
             iniConfigSrc.Load(StringToStream(ini));
 
-            Assert.Equal("TestConnectionString", iniConfigSrc.Get("DefaultConnection:ConnectionString"));
-            Assert.Equal("SqlClient", iniConfigSrc.Get("DefaultConnection:Provider"));
-            Assert.Equal("AnotherTestConnectionString", iniConfigSrc.Get("Data:Inventory:ConnectionString"));
-            Assert.Equal("MySql", iniConfigSrc.Get("Data:Inventory:Provider"));
+            Assert.Equal("TestConnectionString", (string)iniConfigSrc.Get("DefaultConnection:ConnectionString"));
+            Assert.Equal("SqlClient", (string)iniConfigSrc.Get("DefaultConnection:Provider"));
+            Assert.Equal("AnotherTestConnectionString", (string)iniConfigSrc.Get("Data:Inventory:ConnectionString"));
+            Assert.Equal("MySql", (string)iniConfigSrc.Get("Data:Inventory:Provider"));
         }
 
         [TestMethod]
@@ -99,8 +99,8 @@ namespace nanoFramework.Hosting.UnitTests
 
             iniConfigSrc.Load(StringToStream(ini));
 
-            Assert.Equal("\"TestConnectionString", iniConfigSrc.Get("ConnectionString:DefaultConnection"));
-            Assert.Equal("SqlClient\"", iniConfigSrc.Get("ConnectionString:Provider"));
+            Assert.Equal("\"TestConnectionString", (string)iniConfigSrc.Get("ConnectionString:DefaultConnection"));
+            Assert.Equal("SqlClient\"", (string)iniConfigSrc.Get("ConnectionString:Provider"));
         }
 
         [TestMethod]
@@ -113,8 +113,8 @@ namespace nanoFramework.Hosting.UnitTests
 
             iniConfigSrc.Load(StringToStream(ini));
 
-            Assert.Equal("Test\"Connection\"String", iniConfigSrc.Get("ConnectionString:DefaultConnection"));
-            Assert.Equal("Sql\"Client", iniConfigSrc.Get("ConnectionString:Provider"));
+            Assert.Equal("Test\"Connection\"String", (string)iniConfigSrc.Get("ConnectionString:DefaultConnection"));
+            Assert.Equal("Sql\"Client", (string)iniConfigSrc.Get("ConnectionString:Provider"));
         }
 
         [TestMethod]
@@ -130,10 +130,10 @@ namespace nanoFramework.Hosting.UnitTests
 
             iniConfigSrc.Load(StringToStream(ini));
 
-            Assert.Equal("TestConnectionString", iniConfigSrc.Get("DefaultConnection:ConnectionString"));
-            Assert.Equal("SqlClient", iniConfigSrc.Get("DefaultConnection:Provider"));
-            Assert.Equal("AnotherTestConnectionString", iniConfigSrc.Get("Data:Inventory:ConnectionString"));
-            Assert.Equal("MySql", iniConfigSrc.Get("Data:Inventory:Provider"));
+            Assert.Equal("TestConnectionString", (string)iniConfigSrc.Get("DefaultConnection:ConnectionString"));
+            Assert.Equal("SqlClient", (string)iniConfigSrc.Get("DefaultConnection:Provider"));
+            Assert.Equal("AnotherTestConnectionString", (string)iniConfigSrc.Get("Data:Inventory:ConnectionString"));
+            Assert.Equal("MySql", (string)iniConfigSrc.Get("Data:Inventory:Provider"));
         }
 
         [TestMethod]
@@ -154,10 +154,10 @@ namespace nanoFramework.Hosting.UnitTests
 
             iniConfigSrc.Load(StringToStream(ini));
 
-            Assert.Equal("TestConnectionString", iniConfigSrc.Get("DefaultConnection:ConnectionString"));
-            Assert.Equal("SqlClient", iniConfigSrc.Get("DefaultConnection:Provider"));
-            Assert.Equal("AnotherTestConnectionString", iniConfigSrc.Get("Data:Inventory:ConnectionString"));
-            Assert.Equal("MySql", iniConfigSrc.Get("Data:Inventory:Provider"));
+            Assert.Equal("TestConnectionString", (string)iniConfigSrc.Get("DefaultConnection:ConnectionString"));
+            Assert.Equal("SqlClient", (string)iniConfigSrc.Get("DefaultConnection:Provider"));
+            Assert.Equal("AnotherTestConnectionString", (string)iniConfigSrc.Get("Data:Inventory:ConnectionString"));
+            Assert.Equal("MySql", (string)iniConfigSrc.Get("Data:Inventory:Provider"));
         }
 
         [TestMethod]
@@ -168,7 +168,7 @@ namespace nanoFramework.Hosting.UnitTests
             var iniConfigSrc = new IniStreamConfigurationProvider(new IniStreamConfigurationSource());
             iniConfigSrc.Load(StringToStream(ini));
 
-            Assert.Equal("value", iniConfigSrc.Get("section:key"));
+            Assert.Equal("value", (string)iniConfigSrc.Get("section:key"));
         }
 
         [TestMethod]
@@ -179,7 +179,7 @@ namespace nanoFramework.Hosting.UnitTests
             var iniConfigSrc = new IniStreamConfigurationProvider(new IniStreamConfigurationSource());
             iniConfigSrc.Load(StringToStream(ini));
 
-            Assert.Equal("value", iniConfigSrc.Get("section:key"));
+            Assert.Equal("value", (string)iniConfigSrc.Get("section:key"));
         }
 
         [TestMethod]

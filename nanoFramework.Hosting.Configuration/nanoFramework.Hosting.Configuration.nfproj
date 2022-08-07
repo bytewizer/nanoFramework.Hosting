@@ -31,6 +31,7 @@
   <ItemGroup>
     <Compile Include="Configuration\ConfigurationProvider.cs" />
     <Compile Include="Configuration\ConfigurationBuilder.cs" />
+    <Compile Include="Configuration\ConfigurationExtensions.cs" />
     <Compile Include="Configuration\ConfigurationRoot.cs" />
     <Compile Include="Configuration\IConfigurationBuilder.cs" />
     <Compile Include="Configuration\MemoryConfigurationBuilderExtensions.cs" />

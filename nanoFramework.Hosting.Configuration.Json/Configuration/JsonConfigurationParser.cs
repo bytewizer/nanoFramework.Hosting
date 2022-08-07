@@ -29,7 +29,7 @@ namespace nanoFramework.Hosting.Configuration.Json
                 {
                     foreach (DictionaryEntry value in GetValues(entry))
                     {
-                        //Debug.WriteLine($"{value.Key} = {value.Value}");
+                        Debug.WriteLine($"{value.Key} = {value.Value}");
                         _data.Add(value.Key, value.Value);
                     }
                 }

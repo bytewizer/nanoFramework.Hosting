@@ -8,35 +8,32 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectTypeGuids>{11A8DD76-328B-46DF-9F39-F559912D0360};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <ProjectGuid>{AEEC4A38-FF56-4ACD-9DF5-E0BEA2D1263A}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>e6eb1fd5-78f9-48fa-8941-337330d95f85</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <FileAlignment>512</FileAlignment>
-    <RootNamespace>nanoFramework.Hosting.Configuration.Ini</RootNamespace>
-    <AssemblyName>nanoFramework.Hosting.Configuration.Ini</AssemblyName>
+    <RootNamespace>nanoFramework.TestHarness</RootNamespace>
+    <AssemblyName>nanoFramework.TestHarness</AssemblyName>
     <TargetFrameworkVersion>v1.0</TargetFrameworkVersion>
-    <NF_IsCoreLibrary>True</NF_IsCoreLibrary>
-    <DocumentationFile>bin\$(Configuration)\nanoFramework.Hosting.Configuration.Ini.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <DelaySign>false</DelaySign>
   </PropertyGroup>
   <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.props" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.props')" />
   <ItemGroup>
-    <Compile Include="Configuration\IniConfigurationExtensions.cs" />
-    <Compile Include="Configuration\IniStreamConfigurationSource.cs" />
-    <Compile Include="Configuration\IniStreamConfigurationProvider.cs" />
+    <Compile Include="DefaultClient.cs" />
+    <Compile Include="HttpbunClient.cs" />
+    <Compile Include="BasicClient.cs" />
+    <Compile Include="NamedClient.cs" />
+    <Compile Include="TypedClient.cs" />
+    <Compile Include="NamedClients.cs" />
+    <Compile Include="HttpService.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib">
       <HintPath>..\packages\nanoFramework.CoreLibrary.1.12.0\lib\mscorlib.dll</HintPath>
+    </Reference>
+    <Reference Include="nanoFramework.Runtime.Events">
+      <HintPath>..\packages\nanoFramework.Runtime.Events.1.10.0\lib\nanoFramework.Runtime.Events.dll</HintPath>
     </Reference>
     <Reference Include="nanoFramework.System.Collections">
       <HintPath>..\packages\nanoFramework.System.Collections.1.4.0\lib\nanoFramework.System.Collections.dll</HintPath>
@@ -44,18 +41,30 @@
     <Reference Include="nanoFramework.System.Text">
       <HintPath>..\packages\nanoFramework.System.Text.1.2.3\lib\nanoFramework.System.Text.dll</HintPath>
     </Reference>
+    <Reference Include="System.Device.Wifi">
+      <HintPath>..\packages\nanoFramework.System.Device.Wifi.1.5.8\lib\System.Device.Wifi.dll</HintPath>
+    </Reference>
     <Reference Include="System.IO.Streams">
       <HintPath>..\packages\nanoFramework.System.IO.Streams.1.1.9\lib\System.IO.Streams.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net">
+      <HintPath>..\packages\nanoFramework.System.Net.1.10.8\lib\System.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+      <HintPath>..\packages\nanoFramework.System.Net.Http.Client.1.5.13\lib\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading">
+      <HintPath>..\packages\nanoFramework.System.Threading.1.0.4\lib\System.Threading.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\nanoFramework.DependencyInjection\nanoFramework.DependencyInjection\nanoFramework.DependencyInjection.nfproj" />
-    <ProjectReference Include="..\nanoFramework.Hosting.Configuration.Streams\nanoFramework.Hosting.Configuration.Streams.nfproj" />
-    <ProjectReference Include="..\nanoFramework.Hosting.Configuration\nanoFramework.Hosting.Configuration.nfproj" />
-    <ProjectReference Include="..\nanoFramework.Hosting\nanoFramework.Hosting.nfproj" />
+    <ProjectReference Include="..\..\..\..\nanoFramework.DependencyInjection\nanoFramework.DependencyInjection\nanoFramework.DependencyInjection.nfproj" />
+    <ProjectReference Include="..\..\..\nanoFramework.Hosting.Configuration\nanoFramework.Hosting.Configuration.nfproj" />
+    <ProjectReference Include="..\..\..\nanoFramework.Hosting.Http\nanoFramework.Hosting.Http.nfproj" />
+    <ProjectReference Include="..\..\..\nanoFramework.Hosting\nanoFramework.Hosting.nfproj" />
   </ItemGroup>
   <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.CSharp.targets" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.CSharp.targets')" />
   <ProjectExtensions>
@@ -63,11 +72,4 @@
       <ProjectConfigurationsDeclaredAsItems />
     </ProjectCapabilities>
   </ProjectExtensions>
-  <Import Project="..\packages\Nerdbank.GitVersioning.3.5.108\build\Nerdbank.GitVersioning.targets" Condition="Exists('..\packages\Nerdbank.GitVersioning.3.5.108\build\Nerdbank.GitVersioning.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105.The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Nerdbank.GitVersioning.3.5.108\build\Nerdbank.GitVersioning.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Nerdbank.GitVersioning.3.5.108\build\Nerdbank.GitVersioning.targets'))" />
-  </Target>
 </Project>

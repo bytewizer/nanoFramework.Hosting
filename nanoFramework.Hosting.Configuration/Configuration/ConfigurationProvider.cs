@@ -31,13 +31,13 @@ namespace nanoFramework.Hosting.Configuration
         /// <param name="key">The key to lookup.</param>
         /// <param name="value">The value found at key if one is found.</param>
         /// <returns>True if key has a value, false otherwise.</returns>
-        public virtual bool TryGet(string key, out string value)
+        public virtual bool TryGet(string key, out object value)
         {
             var searchKey = key.ToLower();
 
             if (Data.Contains(searchKey))
             {
-                value = (string)Data[searchKey];
+                value = Data[searchKey];
                 return true;
             }
 
@@ -50,7 +50,7 @@ namespace nanoFramework.Hosting.Configuration
         /// </summary>
         /// <param name="key">The configuration key to set.</param>
         /// <param name="value">The value to set.</param>
-        public virtual void Set(string key, string value)
+        public virtual void Set(string key, object value)
             => Data[key.ToLower()] = value;
 
         /// <summary>

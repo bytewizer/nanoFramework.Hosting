@@ -44,7 +44,7 @@ namespace nanoFramework.Hosting.Configuration
         /// </summary>
         /// <param name="key">The configuration key.</param>
         /// <returns>The configuration value.</returns>
-        public string this[string key]
+        public object this[string key]
         {
             get => GetConfiguration(_providers, key);
             set => SetConfiguration(_providers, key, value);
@@ -72,13 +72,13 @@ namespace nanoFramework.Hosting.Configuration
             }
         }
 
-        internal static string GetConfiguration(ArrayList providers, string key)
+        internal static object GetConfiguration(ArrayList providers, string key)
         {
             for (int index = providers.Count - 1; index >= 0; index--)
             {
                 IConfigurationProvider provider = (IConfigurationProvider)providers[index];
 
-                if (provider.TryGet(key, out string value))
+                if (provider.TryGet(key, out object value))
                 {
                     return value;
                 }
@@ -87,7 +87,7 @@ namespace nanoFramework.Hosting.Configuration
             return null;
         }
 
-        internal static void SetConfiguration(ArrayList providers, string key, string value)
+        internal static void SetConfiguration(ArrayList providers, string key, object value)
         {
             if (providers.Count == 0)
             {

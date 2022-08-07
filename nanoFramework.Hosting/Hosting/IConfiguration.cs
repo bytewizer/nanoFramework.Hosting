@@ -10,6 +10,6 @@
         /// </summary>
         /// <param name="key">The configuration key.</param>
         /// <returns>The configuration value.</returns>
-        string this[string key] { get; set; }
+        object this[string key] { get; set; }
     }
 }

@@ -46,13 +46,13 @@ namespace nanoFramework.Hosting.UnitTests
             var memVal2 = config["Mem2:KeyInMem2"];
             var memVal3 = config["MEM3:KEYINMEM3"];
 
-            Assert.Equal("ValueInMem1", memVal1);
-            Assert.Equal("ValueInMem2", memVal2);
-            Assert.Equal("ValueInMem3", memVal3);
+            Assert.Equal("ValueInMem1", (string)memVal1);
+            Assert.Equal("ValueInMem2", (string)memVal2);
+            Assert.Equal("ValueInMem3", (string)memVal3);
 
-            Assert.Equal("ValueInMem1", config["mem1:keyinmem1"]);
-            Assert.Equal("ValueInMem2", config["Mem2:KeyInMem2"]);
-            Assert.Equal("ValueInMem3", config["MEM3:KEYINMEM3"]);
+            Assert.Equal("ValueInMem1", config.GetValue("mem1:keyinmem1"));
+            Assert.Equal("ValueInMem2", config.GetValue("Mem2:KeyInMem2"));
+            Assert.Equal("ValueInMem3", config.GetValue("MEM3:KEYINMEM3"));
             Assert.Null(config["NotExist"]);
         }
 
@@ -77,7 +77,7 @@ namespace nanoFramework.Hosting.UnitTests
 
             var config = configurationBuilder.Build();
 
-            Assert.Equal("ValueInMem2", config["Key1:Key2"]);
+            Assert.Equal("ValueInMem2", (string)config["Key1:Key2"]);
         }
 
         [TestMethod]
@@ -117,14 +117,14 @@ namespace nanoFramework.Hosting.UnitTests
             var memConfigProvider2 = memConfigSrc2.Build(configurationBuilder);
             var memConfigProvider3 = memConfigSrc3.Build(configurationBuilder);
 
-            Assert.Equal("NewValue1", config["Key1"]);
-            Assert.Equal("NewValue1", memConfigProvider1.Get("Key1"));
-            Assert.Equal("NewValue1", memConfigProvider2.Get("Key1"));
-            Assert.Equal("NewValue1", memConfigProvider3.Get("Key1"));
-            Assert.Equal("NewValue2", config["Key2"]);
-            Assert.Equal("NewValue2", memConfigProvider1.Get("Key2"));
-            Assert.Equal("NewValue2", memConfigProvider2.Get("Key2"));
-            Assert.Equal("NewValue2", memConfigProvider3.Get("Key2"));
+            Assert.Equal("NewValue1", (string)config["Key1"]);
+            Assert.Equal("NewValue1", (string)memConfigProvider1.Get("Key1"));
+            Assert.Equal("NewValue1", (string)memConfigProvider2.Get("Key1"));
+            Assert.Equal("NewValue1", (string)memConfigProvider3.Get("Key1"));
+            Assert.Equal("NewValue2", (string)config["Key2"]);
+            Assert.Equal("NewValue2", (string)memConfigProvider1.Get("Key2"));
+            Assert.Equal("NewValue2", (string)memConfigProvider2.Get("Key2"));
+            Assert.Equal("NewValue2", (string)memConfigProvider3.Get("Key2"));
         }
 
         [TestMethod]
@@ -141,7 +141,7 @@ namespace nanoFramework.Hosting.UnitTests
                     })
                 .Build();
                         
-            Assert.Equal("valueB", configurationRoot["keya:keyb"]);
+            Assert.Equal("valueB", (string)configurationRoot["keya:keyb"]);
         }
 
         [TestMethod]
@@ -152,8 +152,8 @@ namespace nanoFramework.Hosting.UnitTests
             {
                 services.AddHostedService(typeof(HostedService));
 
-                Assert.Equal("started", context.Configuration["Test:Start"]);
-                Assert.Equal("stopped", context.Configuration["Test:Stop"]);
+                Assert.Equal("started", (string)context.Configuration["Test:Start"]);
+                Assert.Equal("stopped", (string)context.Configuration["Test:Stop"]);
             })
             .ConfigureAppConfiguration((builder) =>
             {
@@ -208,8 +208,8 @@ namespace nanoFramework.Hosting.UnitTests
 
             var config = (IConfiguration)host.Services.GetService(typeof(IConfiguration));
             
-            Assert.Equal("NewValue1", config["key1"]);
-            Assert.Equal("NewValue2", config["key2"]);
+            Assert.Equal("NewValue1", (string)config["key1"]);
+            Assert.Equal("NewValue2", (string)config["key2"]);
         }
 
         private class TestMemorySourceProvider : MemoryConfigurationProvider, IConfigurationSource
@@ -241,21 +241,21 @@ namespace nanoFramework.Hosting.UnitTests
             public void Start()
             {
                 _configRoot.Reload();
-                Started = _config["test:start"];
+                Started = _config.GetValue("test:start");
             }
 
             public void Stop()
             {
-                Stopped = _config["test:stop"];
+                Stopped = (string)_config["test:stop"];
             }
         }
     }
 
     public static class ConfigurationProviderExtensions
     {
-        public static string Get(this IConfigurationProvider provider, string key)
+        public static object Get(this IConfigurationProvider provider, string key)
         {
-            string value;
+            object value;
 
             if (!provider.TryGet(key, out value))
             {

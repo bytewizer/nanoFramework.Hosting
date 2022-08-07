@@ -22,10 +22,10 @@ namespace nanoFramework.Hosting.UnitTests
             var host = Host.CreateDefaultBuilder()
                 .ConfigureServices((context, services) =>
                 {
-                    Assert.Equal("value2", context.Configuration["key2"]);
-                    Assert.Equal("3", context.Configuration["object1:property2:1"]);
-                    Assert.Equal("started", context.Configuration["test:start"]);
-                    Assert.Equal("stopped", context.Configuration["test:stop"]);
+                    Assert.Equal("value2", (string)context.Configuration["key2"]);
+                    Assert.Equal("3", (string)context.Configuration["object1:property2:1"]);
+                    Assert.Equal("started", (string)context.Configuration["test:start"]);
+                    Assert.Equal("stopped", (string)context.Configuration["test:stop"]);
                     
                     context.Configuration["Key1"] = "NewValue1";
                 })
@@ -43,9 +43,9 @@ namespace nanoFramework.Hosting.UnitTests
 
             var config = (IConfiguration)host.Services.GetService(typeof(IConfiguration));
 
-            Assert.Equal("NewValue1", config["key1"]);
-            Assert.Equal("5", config["object1:property2:3"]);
-            Assert.Equal("started", config["test:start"]);
+            Assert.Equal("NewValue1", (string)config["key1"]);
+            Assert.Equal("5", (string)config["object1:property2:3"]);
+            Assert.Equal("started", (string)config["test:start"]);
         }
 
         [TestMethod]
@@ -62,10 +62,10 @@ namespace nanoFramework.Hosting.UnitTests
             }";
 
             var config = new ConfigurationBuilder().AddJsonStream(StringToStream(json)).Build();
-            Assert.Equal("test", config["firstname"]);
-            Assert.Equal("last.name", config["test.last.name"]);
-            Assert.Equal("Something street", config["residential.address:STREET.name"]);
-            Assert.Equal("12345", config["residential.address:zipcode"]);
+            Assert.Equal("test", (string)config["firstname"]);
+            Assert.Equal("last.name", (string)config["test.last.name"]);
+            Assert.Equal("Something street", (string)config["residential.address:STREET.name"]);
+            Assert.Equal("12345", (string)config["residential.address:zipcode"]);
         }
 
         [TestMethod]
@@ -79,7 +79,7 @@ namespace nanoFramework.Hosting.UnitTests
             var jsonConfigSrc = new JsonStreamConfigurationProvider(new JsonStreamConfigurationSource());
             jsonConfigSrc.Load(StringToStream(json));
 
-            Assert.Equal(string.Empty, jsonConfigSrc.Get("name"));
+            Assert.Equal(string.Empty, (string)jsonConfigSrc.Get("name"));
         }
 
         [TestMethod]
@@ -176,10 +176,10 @@ namespace nanoFramework.Hosting.UnitTests
             var jsonConfigSrc = new JsonStreamConfigurationProvider(new JsonStreamConfigurationSource());
             jsonConfigSrc.Load(StringToStream(json));
 
-            Assert.Equal("test", jsonConfigSrc.Get("firstname"));
-            Assert.Equal("last.name", jsonConfigSrc.Get("test.last.name"));
-            Assert.Equal("Something street", jsonConfigSrc.Get("residential.address:STREET.name"));
-            Assert.Equal("12345", jsonConfigSrc.Get("residential.address:zipcode"));
+            Assert.Equal("test", (string)jsonConfigSrc.Get("firstname"));
+            Assert.Equal("last.name", (string)jsonConfigSrc.Get("test.last.name"));
+            Assert.Equal("Something street", (string)jsonConfigSrc.Get("residential.address:STREET.name"));
+            Assert.Equal("12345", (string)jsonConfigSrc.Get("residential.address:zipcode"));
         }
 
         public static Stream StringToStream(string str)
