@@ -55,7 +55,7 @@ namespace nanoFramework.TestHarness
 
         private static void SetupWifi()
         {
-            var success = WifiNetworkHelper.ConnectDhcp("crytek", "!therices!");
+            var success = WifiNetworkHelper.ConnectDhcp("ssid", "!password!");
 
             if (success)
             {
