@@ -16,7 +16,7 @@ namespace nanoFramework.Hosting
     public class HostBuilder : IHostBuilder
     {
         private bool _hostBuilt;
-        private HostBuilderContext _hostBuilderContext;
+        private readonly HostBuilderContext _hostBuilderContext;
 
         private readonly ServiceProviderOptions _providerOptions;
         private readonly ArrayList _configureAppActions;
@@ -29,7 +29,7 @@ namespace nanoFramework.Hosting
         {
             _configureAppActions = new ArrayList();
             _configureServicesActions = new ArrayList();
-            
+
             if (Debugger.IsAttached)
             {
                 // enables di validation as default when debugger is attached   
@@ -42,7 +42,18 @@ namespace nanoFramework.Hosting
             {
                 _providerOptions = new ServiceProviderOptions();
             }
+
+            // Create host builder context
+            _hostBuilderContext = new HostBuilderContext(Properties);
+
+            // Create service provider
+            Services = new ServiceCollection();
         }
+
+        /// <summary>
+        /// A collection of services for the application to compose.
+        /// </summary>
+        public IServiceCollection Services { get; set; }
 
         /// <inheritdoc />
         public object[] Properties { get; set; } = new object[0];
@@ -95,26 +106,20 @@ namespace nanoFramework.Hosting
             }
             _hostBuilt = true;
 
-            // Create host builder context
-            _hostBuilderContext = new HostBuilderContext(Properties);
-
-            // Create service provider
-            var services = new ServiceCollection();
-
             foreach (ServiceContextDelegate configureAppAction in _configureAppActions)
             {
-                configureAppAction(_hostBuilderContext, services);
+                configureAppAction(_hostBuilderContext, Services);
             }
 
             foreach (ServiceContextDelegate configureServicesAction in _configureServicesActions)
             {
-                configureServicesAction(_hostBuilderContext, services);
+                configureServicesAction(_hostBuilderContext, Services);
             }
 
-            services.AddSingleton(typeof(IHost), typeof(Internal.Host));
-            services.AddSingleton(typeof(IHostBuilder), _hostBuilderContext);
+            Services.AddSingleton(typeof(IHost), typeof(Internal.Host));
+            Services.AddSingleton(typeof(IHostBuilder), _hostBuilderContext);
 
-            var appServices = services.BuildServiceProvider(_providerOptions);
+            var appServices = Services.BuildServiceProvider(_providerOptions);
 
             if (appServices == null)
             {

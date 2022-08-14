@@ -76,7 +76,7 @@ namespace nanoFramework.Hosting.Http
         /// Use <see cref="Options.DefaultName"/> as the name to configure the default client.
         /// </para>
         /// </remarks>
-        public static IServiceCollection AddHttpClient(this IServiceCollection services, ClientAction configureClient)
+        public static IServiceCollection AddHttpClient(this IServiceCollection services, HttpClientAction configureClient)
         {
             return AddHttpClient(services, Options.DefaultName, configureClient);
         }
@@ -97,7 +97,7 @@ namespace nanoFramework.Hosting.Http
         /// Use <see cref="Options.DefaultName"/> as the name to configure the default client.
         /// </para>
         /// </remarks>
-        public static IServiceCollection AddHttpClient(this IServiceCollection services, string name, ClientAction configureClient)
+        public static IServiceCollection AddHttpClient(this IServiceCollection services, string name, HttpClientAction configureClient)
         {
             if (services == null)
             {

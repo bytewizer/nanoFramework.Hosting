@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle("nanoFramework.Hosting")]
 [assembly: AssemblyCompany("nanoFramework Contributors")]
-[assembly: AssemblyProduct(".NET nanoFramework nanoFramework.DependencyInjection")]
+[assembly: AssemblyProduct(".NET nanoFramework nanoFramework.Hosting")]
 [assembly: AssemblyCopyright("Copyright (c) .NET Foundation and Contributors")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 

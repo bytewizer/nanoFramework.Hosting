@@ -18,13 +18,6 @@
   </PropertyGroup>
   <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.props" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.props')" />
   <ItemGroup>
-    <Compile Include="DefaultClient.cs" />
-    <Compile Include="HttpbunClient.cs" />
-    <Compile Include="BasicClient.cs" />
-    <Compile Include="NamedClient.cs" />
-    <Compile Include="TypedClient.cs" />
-    <Compile Include="NamedClients.cs" />
-    <Compile Include="HttpService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -50,9 +43,6 @@
     <Reference Include="System.Net">
       <HintPath>..\packages\nanoFramework.System.Net.1.10.8\lib\System.Net.dll</HintPath>
     </Reference>
-    <Reference Include="System.Net.Http">
-      <HintPath>..\packages\nanoFramework.System.Net.Http.Client.1.5.13\lib\System.Net.Http.dll</HintPath>
-    </Reference>
     <Reference Include="System.Threading">
       <HintPath>..\packages\nanoFramework.System.Threading.1.0.4\lib\System.Threading.dll</HintPath>
     </Reference>
@@ -63,7 +53,11 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\nanoFramework.DependencyInjection\nanoFramework.DependencyInjection\nanoFramework.DependencyInjection.nfproj" />
     <ProjectReference Include="..\..\..\nanoFramework.Hosting.Configuration\nanoFramework.Hosting.Configuration.nfproj" />
-    <ProjectReference Include="..\..\..\nanoFramework.Hosting.Http\nanoFramework.Hosting.Http.nfproj" />
+    <ProjectReference Include="..\..\..\nanoFramework.Hosting.HostApplication\nanoFramework.Hosting.HostApplication.nfproj" />
+    <ProjectReference Include="..\..\..\nanoFramework.Hosting.Logging.Abstractions\nanoFramework.Hosting.Logging.Abstractions.nfproj" />
+    <ProjectReference Include="..\..\..\nanoFramework.Hosting.Logging\nanoFramework.Hosting.Logging.nfproj" />
+    <ProjectReference Include="..\..\..\nanoFramework.Hosting.Pipeline\nanoFramework.Hosting.Pipeline.nfproj" />
+    <ProjectReference Include="..\..\..\nanoFramework.Hosting.Threading\nanoFramework.Hosting.Threading.nfproj" />
     <ProjectReference Include="..\..\..\nanoFramework.Hosting\nanoFramework.Hosting.nfproj" />
   </ItemGroup>
   <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.CSharp.targets" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.CSharp.targets')" />

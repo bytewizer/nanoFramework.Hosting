@@ -1,14 +1,12 @@
+using nanoFramework.DependencyInjection;
+using nanoFramework.Networking;
+using nanoFramework.Hosting.Logging;
+using nanoFramework.Hosting.Logging.Debug;
+using nanoFramework.Hosting;
 using System;
 using System.Diagnostics;
-using System.Net.Http;
 using System.Net.NetworkInformation;
-using System.Threading;
 
-using nanoFramework.Networking;
-using nanoFramework.Hosting.Http;
-using nanoFramework.DependencyInjection;
-using nanoFramework.Hosting;
-using nanoFramework.Hosting.Configuration;
 
 namespace nanoFramework.TestHarness
 {
@@ -16,64 +14,50 @@ namespace nanoFramework.TestHarness
 
     public class Program
     {
-        static readonly HttpClient _httpClient = new HttpClient();
-
         public static void Main()
         {
-            SetupWifi();
+            var builder = HostApplication.CreateBuilder();
+            builder.Logging.AddDebug();
+            
+            var app = builder.Build();
+            app.Run();
 
-            var builder = Host.CreateDefaultBuilder()
+            //SetupWifi();
 
-                .ConfigureServices((context, services) =>
-                {
-                    services.AddHttpClient(NamedClients.Httpbun, client =>
-                    {
-                        client.BaseAddress = new Uri("http://httpbun.org/");
-                    });
-
-                    services.AddHttpClient(client =>
-                    {
-                        client.BaseAddress = new Uri("http://httpbun.org/");
-                    });
-
-                    services.AddSingleton(typeof(DefaultClient));
-                    services.AddSingleton(typeof(BasicClient));
-                    services.AddSingleton(typeof(NamedClient));
-                });
-
-            var host = builder.Build();
-
-            var defaultClient = (DefaultClient)host.Services.GetService(typeof(DefaultClient));
-            Debug.WriteLine(defaultClient.GetJson());
-
-            var basicClient = (BasicClient)host.Services.GetService(typeof(BasicClient));
-            Debug.WriteLine(basicClient.GetJson());
-
-            var namedClient = (NamedClient)host.Services.GetService(typeof(NamedClient));
-            Debug.WriteLine(namedClient.GetJson());
-        }
-
-        private static void SetupWifi()
-        {
-            var success = WifiNetworkHelper.ConnectDhcp("crytek", "!therices!");
-
-            if (success)
+            var serviceProvider = new ServiceCollection()
+            .AddLogging(builder =>
             {
-                Debug.WriteLine("IP: " + NetworkInterface.GetAllNetworkInterfaces()[0].IPv4Address);
-            }
-            else
-            {
-                Debug.WriteLine($"Failed to establish IP address and DateTime, error: {NetworkHelper.HelperException}.");
-            }
+                builder.AddDebug();
+                builder.SetMinimumLevel(LogLevel.Information);
+            })
+            .BuildServiceProvider();
+
+            //var loggerFactory = (ILoggerFactory)serviceProvider.GetRequiredService(typeof(ILoggerFactory));
+            //var logger = loggerFactory.CreateLogger("name");
+            //logger.Log(LogLevel.Information, "Hello!!!");
+
+
+            //var builder = HostApplication.CreateBuilder();
+            //builder.Logging.AddDebug();
+
+            //var app = builder.Build();
+            //app.Logger.Log(LogLevel.Information, "Hello!!!");
+            //app.Run();
+
         }
 
-        private static void GetJsonResponse()
-        {
-            var response = _httpClient.Get("http://httpbun.org/get");
-            response.EnsureSuccessStatusCode();
-            var responseBody = response.Content.ReadAsString();
+        //private static void SetupWifi()
+        //{
+        //    var success = WifiNetworkHelper.ConnectDhcp("ssid", "password");
 
-            Debug.WriteLine(responseBody);
-        }
+        //    if (success)
+        //    {
+        //        Debug.WriteLine("IP: " + NetworkInterface.GetAllNetworkInterfaces()[0].IPv4Address);
+        //    }
+        //    else
+        //    {
+        //        Debug.WriteLine($"Failed to establish IP address and DateTime, error: {NetworkHelper.HelperException}.");
+        //    }
+        //}
     }
 }

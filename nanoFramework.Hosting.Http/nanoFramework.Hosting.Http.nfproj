@@ -31,7 +31,7 @@
   <ItemGroup>
     <Compile Include="Http\DefaultTypedHttpClientFactory.cs" />
     <Compile Include="Http\ITypedHttpClientFactory.cs" />
-    <Compile Include="DependencyInjection\ClientAction.cs" />
+    <Compile Include="DependencyInjection\HttpClientAction.cs" />
     <Compile Include="Http\Options.cs" />
     <Compile Include="Http\HttpClientFactoryExtensions.cs" />
     <Compile Include="DependencyInjection\HttpClientFactoryServiceCollectionExtensions.cs" />
