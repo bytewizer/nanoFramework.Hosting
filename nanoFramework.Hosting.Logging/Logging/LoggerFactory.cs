@@ -89,15 +89,15 @@ namespace nanoFramework.Hosting.Logging
             var messageLoggers = new MessageLogger[loggers.Length];
             var minLevel = _filterOptions.MinLevel;
 
-            for (int i = 0; i < loggers.Length; i++)
+            for (int index = 0; index < loggers.Length; index++)
             {
                 if (minLevel > LogLevel.Critical)
                 {
                     continue;
                 }
 
-                messageLoggers[i] = new MessageLogger(
-                        loggers[i].Logger, loggers[i].Category, loggers[i].ProviderType.FullName, minLevel
+                messageLoggers[index] = new MessageLogger(
+                        loggers[index].Logger, loggers[index].Category, minLevel
                     );
             }
 
@@ -108,9 +108,9 @@ namespace nanoFramework.Hosting.Logging
         {
             var loggers = new LoggerInformation[_providers.Count];
 
-            for (var i = 0; i < _providers.Count; i++)
+            for (var index = 0; index < _providers.Count; index++)
             {
-                loggers[i] = new LoggerInformation((ILoggerProvider)_providers[i], categoryName);
+                loggers[index] = new LoggerInformation((ILoggerProvider)_providers[index], categoryName);
             }
 
             return loggers;

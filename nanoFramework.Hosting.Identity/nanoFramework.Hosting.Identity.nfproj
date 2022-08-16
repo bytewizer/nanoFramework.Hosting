@@ -8,15 +8,15 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectTypeGuids>{11A8DD76-328B-46DF-9F39-F559912D0360};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <ProjectGuid>{BEEB2A38-FF56-4ACD-9DF5-E0BEA2D1263A}</ProjectGuid>
+    <ProjectGuid>{20121C4F-7071-48E2-BA45-10EA739CA7D3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <FileAlignment>512</FileAlignment>
-    <RootNamespace>nanoFramework.Hosting.SocketService</RootNamespace>
-    <AssemblyName>nanoFramework.Hosting.SocketService</AssemblyName>
+    <RootNamespace>nanoFramework.Hosting.Identity</RootNamespace>
+    <AssemblyName>nanoFramework.Hosting.Identity</AssemblyName>
     <TargetFrameworkVersion>v1.0</TargetFrameworkVersion>
     <NF_IsCoreLibrary>True</NF_IsCoreLibrary>
-    <DocumentationFile>bin\$(Configuration)\nanoFramework.Hosting.SocketService.xml</DocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\nanoFramework.Hosting.Identity.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -29,55 +29,33 @@
   </PropertyGroup>
   <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.props" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.props')" />
   <ItemGroup>
-    <Compile Include="Channel\ConnectionInfo.cs" />
-    <Compile Include="Channel\SocketChannel.cs" />
-    <Compile Include="Channel\SslStreamBuilder.cs" />
-    <Compile Include="DependencyInjection\ISocketServiceBuilder.cs" />
-    <Compile Include="DependencyInjection\SocketServerServiceCollectionExtension.cs" />
-    <Compile Include="Extensions\DiagnosticsLoggerExtensions.cs" />
-    <Compile Include="Extensions\SocketExceptionExtensions.cs" />
-    <Compile Include="Hosting\ApplicationBuilderAction.cs" />
-    <Compile Include="Hosting\SocketServerHostBuilderExtensions.cs" />
-    <Compile Include="Listeners\SocketListener.cs" />
-    <Compile Include="Listeners\SocketListenerOptions.cs" />
-    <Compile Include="Listeners\SocketListenerOptionsDelegate.cs" />
-    <Compile Include="Listeners\TcpListener.cs" />
-    <Compile Include="Listeners\UdpListener.cs" />
+    <Compile Include="DependencyInjection\IdentityServiceCollectionExtension.cs" />
+    <Compile Include="Identity\DefaultPasswordValidator.cs" />
+    <Compile Include="Identity\DefaultUserValidator.cs" />
+    <Compile Include="System\HMACSHA256.cs" />
+    <Compile Include="Identity\IdentityProvider.cs" />
+    <Compile Include="Identity\IdentityResult.cs" />
+    <Compile Include="Identity\IdentityUser.cs" />
+    <Compile Include="Identity\IIdentityProvider.cs" />
+    <Compile Include="Identity\IIdentityUser.cs" />
+    <Compile Include="Identity\IPasswordHasher.cs" />
+    <Compile Include="Identity\IPasswordValidator.cs" />
+    <Compile Include="Identity\IUserValidator.cs" />
+    <Compile Include="Identity\PasswordHasher.cs" />
+    <Compile Include="Identity\StoreChangedHandler.cs" />
+    <Compile Include="Identity\ArrayListExtensions.cs" />
+    <Compile Include="Identity\UserStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Server\IServerOptions.cs" />
-    <Compile Include="Server\ServerLimits.cs" />
-    <Compile Include="Server\ServerOptions.cs" />
-    <Compile Include="Server\ServerOptionsAction.cs" />
-    <Compile Include="Hosting\SocketServerService.cs" />
-    <Compile Include="Sockets\ConnectedHandler.cs" />
-    <Compile Include="Sockets\DisconnectedHandler.cs" />
-    <Compile Include="Sockets\ISocketContext.cs" />
-    <Compile Include="Sockets\SocketContext.cs" />
-    <Compile Include="Sockets\SocketErrorHandler.cs" />
-    <Compile Include="Sockets\SocketListenerOptionsExtensions.cs" />
-    <Compile Include="Sockets\SocketService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib">
       <HintPath>..\packages\nanoFramework.CoreLibrary.1.12.0\lib\mscorlib.dll</HintPath>
     </Reference>
-    <Reference Include="nanoFramework.Runtime.Events">
-      <HintPath>..\playground\src\packages\nanoFramework.Runtime.Events.1.10.0\lib\nanoFramework.Runtime.Events.dll</HintPath>
-    </Reference>
     <Reference Include="nanoFramework.System.Collections">
       <HintPath>..\packages\nanoFramework.System.Collections.1.4.0\lib\nanoFramework.System.Collections.dll</HintPath>
     </Reference>
     <Reference Include="nanoFramework.System.Text">
-      <HintPath>..\playground\src\packages\nanoFramework.System.Text.1.2.3\lib\nanoFramework.System.Text.dll</HintPath>
-    </Reference>
-    <Reference Include="System.IO.Streams">
-      <HintPath>..\playground\src\packages\nanoFramework.System.IO.Streams.1.1.9\lib\System.IO.Streams.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net">
-      <HintPath>..\playground\src\packages\nanoFramework.System.Net.1.10.8\lib\System.Net.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Threading">
-      <HintPath>..\playground\src\packages\nanoFramework.System.Threading.1.0.4\lib\System.Threading.dll</HintPath>
+      <HintPath>..\playground\MinTest\packages\nanoFramework.System.Text.1.2.3\lib\nanoFramework.System.Text.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -85,10 +63,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\nanoFramework.DependencyInjection\nanoFramework.DependencyInjection\nanoFramework.DependencyInjection.nfproj" />
-    <ProjectReference Include="..\nanoFramework.Hosting.Logging.Abstractions\nanoFramework.Hosting.Logging.Abstractions.nfproj" />
-    <ProjectReference Include="..\nanoFramework.Hosting.Pipeline\nanoFramework.Hosting.Pipeline.nfproj" />
-    <ProjectReference Include="..\nanoFramework.Hosting.Threading\nanoFramework.Hosting.Threading.nfproj" />
-    <ProjectReference Include="..\nanoFramework.Hosting\nanoFramework.Hosting.nfproj" />
   </ItemGroup>
   <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.CSharp.targets" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.CSharp.targets')" />
   <ProjectExtensions>

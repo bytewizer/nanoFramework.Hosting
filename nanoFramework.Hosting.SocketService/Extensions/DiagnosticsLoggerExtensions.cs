@@ -11,15 +11,32 @@ using nanoFramework.Hosting.Sockets.Channel;
 
 namespace nanoFramework.Hosting.Sockets
 {
-//#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
     public static class DiagnosticsLoggerExtensions
     {
+        public static void UnhandledException(this ILogger logger, string name, string message, Exception exception)
+        {
+            logger.Log(
+                LogLevel.Error,
+                message,
+                exception
+                );
+        }
+
+        public static void UnhandledException(this ILogger logger, Exception exception)
+        {
+            logger.Log(
+                LogLevel.Error,
+                "An unhandled exception has occurred while executing.",
+                exception
+                );
+        }
+
         public static void ServiceExecption(this ILogger logger, string message, Exception exception)
         {
             logger.Log(
                 LogLevel.Information,
-                new EventId(110, "Service Exception"),
                 message,
                 exception
                 );
@@ -36,9 +53,7 @@ namespace nanoFramework.Hosting.Sockets
 
             logger.Log(
                 LogLevel.Information,
-                new EventId(111, "Starting Service"),
-                message,
-                null
+                message
                 );
         }
 
@@ -46,7 +61,6 @@ namespace nanoFramework.Hosting.Sockets
         {
             logger.Log(
                 LogLevel.Error,
-                new EventId(111, "Starting Service"),
                 $"Error starting socket listener bound to port {port}.",
                 exception
                 );
@@ -63,9 +77,7 @@ namespace nanoFramework.Hosting.Sockets
 
             logger.Log(
                 LogLevel.Information,
-                new EventId(112, "Starting Service"),
-                message,
-                null
+                message
                 );
         }
 
@@ -73,7 +85,6 @@ namespace nanoFramework.Hosting.Sockets
         {
             logger.Log(
                 LogLevel.Error,
-                new EventId(112, "Starting Service"),
                 $"Error stopping socket listener bound to port {port}.",
                 exception
                 );
@@ -83,9 +94,7 @@ namespace nanoFramework.Hosting.Sockets
         {
             logger.Log(
                 LogLevel.Debug,
-                new EventId(113, "Remote Connect"),
-                $"Remote client {channel.Connection.RemoteIpAddress}:{channel.Connection.RemotePort} has connected.",
-                null
+                $"Remote client {channel.Connection.RemoteIpAddress}:{channel.Connection.RemotePort} has connected."
                 );
         }
 
@@ -93,9 +102,7 @@ namespace nanoFramework.Hosting.Sockets
         {
             logger.Log(
                 LogLevel.Debug,
-                new EventId(113, "Remote Connect"),
-                $"Remote client {channel.Connection.RemoteIpAddress}:{channel.Connection.RemotePort} has closed connection.",
-                null
+                $"Remote client {channel.Connection.RemoteIpAddress}:{channel.Connection.RemotePort} has closed connection."
                 );
         }
 
@@ -103,7 +110,6 @@ namespace nanoFramework.Hosting.Sockets
         {
             logger.Log(
                 LogLevel.Debug,
-                new EventId(113, "Remote Disconnect"),
                 $"Remote client has disconnected connection.",
                 exception
                 );
@@ -113,7 +119,6 @@ namespace nanoFramework.Hosting.Sockets
         {
             logger.Log(
                 LogLevel.Error,
-                new EventId(114, "Channel Execption"),
                 $"Unexpcted channel exception occured.",
                 exception
                 );
@@ -123,7 +128,6 @@ namespace nanoFramework.Hosting.Sockets
         {
             logger.Log(
                 LogLevel.Debug,
-                new EventId(114, "Invalid Message Limit"),
                 $"Invalid message limit length:{length} min:{min} max:{max}.",
                 null
                 );
@@ -133,9 +137,7 @@ namespace nanoFramework.Hosting.Sockets
         {
             logger.Log(
                 LogLevel.Trace,
-                new EventId(115, "Socket Transport"),
-                message,
-                null
+                message
                 );
         }
     }

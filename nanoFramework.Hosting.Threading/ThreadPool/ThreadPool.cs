@@ -34,7 +34,7 @@ namespace System.Threading
         static ThreadPool()
         {
             // create the initial number of threads
-            SetMinThreads(3);
+            SetMinThreads(5);
         }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace System.Threading
         }
 
         /// <summary>
-        /// Shuts down all threads after they have finished theire work.
+        /// Shuts down all threads after they have finished their work.
         /// </summary>
         public static void Shutdown()
         {
@@ -140,12 +140,14 @@ namespace System.Threading
                         return thread;
                     }
                 }
+
                 if (_threads.Count < _maxThreadCount)
                 {
                     var thread = new ThreadPoolThread { IsBusy = true };
                     _threads.Add(thread);
                     return thread;
                 }
+
                 return null;
             }
         }
@@ -170,6 +172,7 @@ namespace System.Threading
                     return false;
                 }
             }
+
             // start next enqueued item
             lock (_itemsQueue.SyncRoot)
             {
@@ -179,6 +182,7 @@ namespace System.Threading
                     return true;
                 }
             }
+
             return false;
         }
 

@@ -6,7 +6,6 @@
 using System;
 using System.Threading;
 using System.Net.Sockets;
-using System.Diagnostics;
 
 using nanoFramework.Hosting.Sockets.Channel;
 using nanoFramework.Hosting.Sockets.Extensions;
@@ -19,8 +18,6 @@ namespace nanoFramework.Hosting.Sockets.Listener
     /// </summary>
     public class TcpListener : SocketListener
     {
-        private int _listeningSockets = 0;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="TcpListener"/> class.
         /// <param name="options">Factory used to create objects used in this library.</param>
@@ -49,13 +46,6 @@ namespace nanoFramework.Hosting.Sockets.Listener
                     // Set the accept event to nonsignaled state
                     _acceptEvent.Reset();
 
-                    // Delay request response if max connections is reached             
-                    while (_listeningSockets >= _options.MaxConcurrentConnections)
-                    {
-                        Debug.WriteLine($"Maxium number of concurrent connections of {_listeningSockets} reached.");
-                        Thread.Sleep(100);
-                    }
-
                     // Waiting for a connection
                     var remoteSocket = _listenSocket.Accept();
 
@@ -73,22 +63,28 @@ namespace nanoFramework.Hosting.Sockets.Listener
                         channel.Assign(remoteSocket);
                     }
 
-                    ThreadPool.QueueUserWorkItem(
-                        new WaitCallback(delegate (object state)
-                        {
-                            // Signal the accept thread to continue
-                            _acceptEvent.Set();
+                    var thread = new Thread(() =>
+                    {
+                        // Signal the accept thread to continue
+                        _acceptEvent.Set();
 
-                            // Increment request count
-                            Interlocked.Increment(ref _listeningSockets);
+                        // Invoke the connected handler
+                        OnConnected(channel);
 
-                            // Invoke the connected handler
-                            OnConnected(channel);
+                    });
+                    thread.Priority = _options.ThreadPriority;
+                    thread.Start();
 
-                            // Decrease request count
-                            Interlocked.Decrement(ref _listeningSockets);
 
-                        }));
+                    //ThreadPool.QueueUserWorkItem(
+                    //    new WaitCallback(delegate (object state)
+                    //    {
+                    //        // Signal the accept thread to continue
+                    //        _acceptEvent.Set();
+
+                    //        // Invoke the connected handler
+                    //        OnConnected(channel);
+                    //    }));
 
                     // Wait until a connection is made before continuing
                     _acceptEvent.WaitOne();

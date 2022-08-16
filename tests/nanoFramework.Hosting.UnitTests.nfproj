@@ -80,8 +80,6 @@
     <ProjectReference Include="..\nanoFramework.Hosting.Configuration.Json\nanoFramework.Hosting.Configuration.Json.nfproj" />
     <ProjectReference Include="..\nanoFramework.Hosting.Configuration.Streams\nanoFramework.Hosting.Configuration.Streams.nfproj" />
     <ProjectReference Include="..\nanoFramework.Hosting.Configuration\nanoFramework.Hosting.Configuration.nfproj" />
-    <ProjectReference Include="..\nanoFramework.Hosting.Logging.Abstractions\nanoFramework.Hosting.Logging.Abstractions.nfproj" />
-    <ProjectReference Include="..\nanoFramework.Hosting.Logging\nanoFramework.Hosting.Logging.nfproj" />
     <ProjectReference Include="..\nanoFramework.Hosting.Pipeline\nanoFramework.Hosting.Pipeline.nfproj" />
     <ProjectReference Include="..\nanoFramework.Hosting.Threading\nanoFramework.Hosting.Threading.nfproj" />
     <ProjectReference Include="..\nanoFramework.Hosting\nanoFramework.Hosting.nfproj" />

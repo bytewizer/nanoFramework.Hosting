@@ -31,6 +31,9 @@ namespace nanoFramework.Hosting.Pipeline.Builder
             ApplicationServices = serviceProvider;
         }
 
+        /// <inheritdoc/>
+        public IServiceProvider ApplicationServices { get; set; }
+
         /// <summary>
         /// A central location for sharing state between components during the host building process.
         /// </summary>
@@ -46,9 +49,6 @@ namespace nanoFramework.Hosting.Pipeline.Builder
                 return _properties;
             }
         }
-
-        /// <inheritdoc/>
-        public IServiceProvider ApplicationServices { get; set; }
 
         /// <inheritdoc/>
         public bool TryGetProperty(string key, out object value)
@@ -102,7 +102,7 @@ namespace nanoFramework.Hosting.Pipeline.Builder
         /// <inheritdoc/>
         public IApplicationBuilder Use(Type serviceType)
         {
-            return Use(serviceType, null);
+            return Use(serviceType, new object[0]);
         }
 
         /// <inheritdoc/>
@@ -149,9 +149,9 @@ namespace nanoFramework.Hosting.Pipeline.Builder
 
             var root = _components[0].Invoke();
 
-            for (int i = 1; i < _components.Length; i++)
+            for (int index = 1; index < _components.Length; index++)
             {
-                root.Use(_components[i].Invoke());
+                root.Use(_components[index].Invoke());
             }
 
             return root;

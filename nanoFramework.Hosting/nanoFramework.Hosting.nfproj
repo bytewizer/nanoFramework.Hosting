@@ -45,6 +45,7 @@
     <Compile Include="Hosting\ServiceCollectionHostedServiceExtensions.cs" />
     <Compile Include="Hosting\ServiceAction.cs" />
     <Compile Include="Hosting\ProviderContextDelegate.cs" />
+    <Compile Include="Hosting\ServiceProviderDelegate.cs" />
     <Compile Include="Hosting\ServiceContextDelegate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

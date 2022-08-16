@@ -27,17 +27,26 @@ namespace nanoFramework.Hosting
         /// <summary>
         /// Initializes a new instance of the <see cref="SocketServerService"/> class.
         /// </summary>
+        /// <param name="services">The service provider.</param>
         /// <param name="loggerFactory">The factory used to create loggers.</param>
-        /// <param name="applicationBuilder">The application builder of <see cref="SocketServerService"/> specific features.</param>
         /// <param name="options">The configuration options of <see cref="SocketServerService"/> specific features.</param>
-        public SocketServerService(IServiceProvider services, ILoggerFactory loggerFactory, IApplicationBuilder applicationBuilder, ServerOptions options)
+        public SocketServerService(IServiceProvider services, ILoggerFactory loggerFactory, IServerOptions options)
             : base (loggerFactory)
         {
-            _options = options;
-            _logger = loggerFactory.CreateLogger(nameof(SocketServerService));
+            var applicationBuilder = (IApplicationBuilder)services.GetService(typeof(ISocketServiceBuilder));
+            
+            if (applicationBuilder == null)
+            {
+                applicationBuilder = new ApplicationBuilder(services);
+                applicationBuilder.Use((context, next) => { });
+            }
+            
             _application = applicationBuilder.Build();
-            _contextPool = new ContextPool(services);
 
+            _logger = loggerFactory.CreateLogger(nameof(SocketServerService));
+            _contextPool = new ContextPool(services);
+            _options = options as ServerOptions;
+            
             SetListener();
         }
 
@@ -85,7 +94,7 @@ namespace nanoFramework.Hosting
             }
             catch (Exception ex)
             {
-                //_logger.UnhandledException(ex);
+                _logger.UnhandledException(ex);
                 return;
             }
         }

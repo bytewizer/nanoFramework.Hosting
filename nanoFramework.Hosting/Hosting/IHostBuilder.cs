@@ -37,6 +37,13 @@ namespace nanoFramework.Hosting
         IHostBuilder ConfigureServices(ServiceContextDelegate configureDelegate);
 
         /// <summary>
+        /// Adds service providers to the container. This can be called multiple times and the results will be additive.
+        /// </summary>
+        /// <param name="configureDelegate">The delegate for configuring the <see cref="IServiceProvider"/>.</param>
+        /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
+        IHostBuilder Configure(ServiceProviderDelegate configureDelegate);
+
+        /// <summary>
         /// Specify the <see cref="IServiceProvider"/> to be the default one.
         /// </summary>
         /// <param name="configureDelegate">The delegate for configuring the <see cref="ServiceProviderOptions"/> that will be used

@@ -18,7 +18,7 @@ namespace nanoFramework.Hosting.Logging
         {
             MessageLogger[] loggers = MessageLoggers;
             
-            if (loggers == null)
+            if (loggers.Length == 0)
             {
                 return;
             }
@@ -53,10 +53,10 @@ namespace nanoFramework.Hosting.Logging
 
             ArrayList exceptions = null;
 
-            int i = 0;
-            for (; i < loggers.Length; i++)
+            int index = 0;
+            for (; index < loggers.Length; index++)
             {
-                ref readonly MessageLogger loggerInfo = ref loggers[i];
+                ref readonly MessageLogger loggerInfo = ref loggers[index];
                 if (!loggerInfo.IsEnabled(logLevel))
                 {
                     continue;
@@ -73,7 +73,7 @@ namespace nanoFramework.Hosting.Logging
                 throw new AggregateException(string.Empty, exceptions);
             }
 
-            return i < loggers.Length;
+            return index < loggers.Length;
         }
 
         private static void LoggerLog(LogLevel logLevel, EventId eventId, ILogger logger, Exception exception, object state, ref ArrayList exceptions)

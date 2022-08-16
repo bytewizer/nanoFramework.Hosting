@@ -12,7 +12,7 @@ namespace nanoFramework.Hosting.Logging
     /// </summary>
     public static class LoggerExtensions
     {
-        private static readonly EventId _eventId = new EventId();
+        public static readonly EventId EventId = new EventId();
 
         /// <summary>
         /// Writes a log entry.
@@ -22,7 +22,7 @@ namespace nanoFramework.Hosting.Logging
         /// <param name="message">The entry to be written.</param>
         public static void Log(this ILogger logger, LogLevel logLevel, string message)
         {
-            logger.Log(logLevel, _eventId, message, null);
+            logger.Log(logLevel, EventId, message, null);
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace nanoFramework.Hosting.Logging
         /// <param name="exception">The exception related to this entry.</param>
         public static void Log(this ILogger logger, LogLevel logLevel, string message, Exception exception)
         {
-            logger.Log(logLevel, _eventId, message, exception);
+            logger.Log(logLevel, EventId, message, exception);
         }
     }
 }

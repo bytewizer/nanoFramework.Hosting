@@ -19,6 +19,7 @@ namespace nanoFramework.Hosting
         private readonly HostBuilderContext _hostBuilderContext;
 
         private readonly ServiceProviderOptions _providerOptions;
+        private readonly ArrayList _configureActions;
         private readonly ArrayList _configureAppActions;
         private readonly ArrayList _configureServicesActions;
 
@@ -27,6 +28,7 @@ namespace nanoFramework.Hosting
         /// </summary>
         public HostBuilder()
         {
+            _configureActions = new ArrayList();
             _configureAppActions = new ArrayList();
             _configureServicesActions = new ArrayList();
 
@@ -85,6 +87,19 @@ namespace nanoFramework.Hosting
         }
 
         /// <inheritdoc />
+        public IHostBuilder Configure(ServiceProviderDelegate configureDelegate)
+        {
+            if (configureDelegate == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            _configureActions.Add(configureDelegate);
+
+            return this;
+        }
+
+        /// <inheritdoc />
         public IHostBuilder UseDefaultServiceProvider(ProviderContextDelegate configureDelegate)
         {
             if (configureDelegate == null)
@@ -124,6 +139,11 @@ namespace nanoFramework.Hosting
             if (appServices == null)
             {
                 throw new InvalidOperationException();
+            }
+
+            foreach (ServiceProviderDelegate configureAction in _configureActions)
+            {
+                configureAction(Services, appServices);
             }
 
             return (Internal.Host)appServices.GetRequiredService(typeof(IHost));
