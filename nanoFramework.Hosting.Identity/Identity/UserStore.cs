@@ -13,29 +13,28 @@ namespace nanoFramework.Hosting.Identity
     /// </summary>
     public class UserStore
     {
-        private readonly object _lock = new object();
+        private readonly Hashtable _users;
+        private readonly object _syncLock = new object();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserStore"/> class.
         /// </summary>
         public UserStore()
             : this(new Hashtable())
-        {
-        
-        }
+        { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserStore"/> class.
         /// </summary>
         public UserStore(Hashtable users)
         {
-            Users = users;
+            _users = users;
         }
 
         /// <summary>
         /// A navigation property for the users the store contains.
         /// </summary>
-        public Hashtable Users { get; private set; }
+        public Hashtable Users { get => _users; }
 
         /// <summary>
         /// Creates the specified user in the store.
@@ -45,17 +44,18 @@ namespace nanoFramework.Hosting.Identity
         {
             try
             {
-                lock (_lock)
+                if (!_users.Contains(user.UserName))
                 {
-                    if (!Users.Contains(user.UserName))
+                    lock (_syncLock)
                     {
-                        Users.Add(user.UserName, user);
-                        return IdentityResult.Success;
+                        _users.Add(user.UserName, user);
                     }
-                    else
-                    {
-                        return IdentityResult.Failed($"User {user.Id} failed to be added. User name must be unique.");
-                    }
+
+                    return IdentityResult.Success;
+                }
+                else
+                {
+                    return IdentityResult.Failed($"User {user.Id} failed to be added. User name must be unique.");
                 }
             }
             catch (Exception ex)
@@ -72,9 +72,13 @@ namespace nanoFramework.Hosting.Identity
         {
             try
             {
-                if (Users.Contains(user.UserName))
+                if (_users.Contains(user.UserName))
                 {
-                    Users.Remove(user.UserName);
+                    lock (_syncLock)
+                    {
+                        _users.Remove(user.UserName);
+                    }
+
                     return IdentityResult.Success;
                 }
                 else
@@ -110,7 +114,10 @@ namespace nanoFramework.Hosting.Identity
         /// </summary>
         public void Clear()
         {
-            Users.Clear();
+            lock (_syncLock)
+            {
+                _users.Clear();
+            }
         }
 
         /// <summary>
@@ -122,7 +129,7 @@ namespace nanoFramework.Hosting.Identity
         {
             user = null;
 
-            if (Users.Contains(username))
+            if (_users.Contains(username))
             {
                 // user found so return user details
                 user = (IIdentityUser)Users[username];
@@ -139,10 +146,10 @@ namespace nanoFramework.Hosting.Identity
         /// <param name="username">The user name to search for.</param>
         public IIdentityUser FindByName(string username)
         {
-            if (Users.Contains(username))
+            if (_users.Contains(username))
             {
                 // user found so return user details
-                return (IIdentityUser)Users[username];
+                return (IIdentityUser)_users[username];
             }
 
             return null;
@@ -154,7 +161,7 @@ namespace nanoFramework.Hosting.Identity
         /// <param name="userId">The user id to search for.</param>
         public IIdentityUser FindById(string userId)
         {
-            foreach (IIdentityUser user in Users.Values)
+            foreach (IIdentityUser user in _users.Values)
             {
                 if (user.Id == userId)
                 {

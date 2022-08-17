@@ -4,7 +4,6 @@
 //
 
 using System;
-using System.Text;
 using System.Collections;
 
 namespace nanoFramework.Hosting.Identity
@@ -21,30 +20,23 @@ namespace nanoFramework.Hosting.Identity
         /// Initializes a new instance of the <see cref="IdentityProvider"/> class.
         /// </summary>
         public IdentityProvider()
-            : this(new UserStore(), new PasswordHasher())
-        {
-        }
+            : this(new PasswordHasher())
+        { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="IdentityProvider"/> class.
         /// </summary>
-        /// <param name="userStore">The password hashing implementation to use when saving passwords.</param>
         /// <param name="passwordHasher">The persistence store of users.</param>
-        public IdentityProvider(UserStore userStore, IPasswordHasher passwordHasher)
+        public IdentityProvider(IPasswordHasher passwordHasher)
         {
-            if (userStore == null)
-            {
-                throw new ArgumentNullException();
-            }
-
             if (passwordHasher == null)
             {
                 throw new ArgumentNullException();
             }
 
-            _userStore = userStore;
-            PasswordHasher = passwordHasher;
+            _userStore = new UserStore();
 
+            PasswordHasher = passwordHasher;
             PasswordValidators.Add(new DefaultPasswordValidator());
             UserValidators.Add(new DefaultUserValidator());
         }
@@ -68,12 +60,6 @@ namespace nanoFramework.Hosting.Identity
         /// Gets the persistence store of users the manager operates over.
         /// </summary>
         public Hashtable Users { get => _userStore.Users; }
-
-        /// <inheritdoc/>
-        public virtual IdentityResult Create(IIdentityUser user, string password)
-        {
-            return Create(user, Encoding.UTF8.GetBytes(password));
-        }
 
         /// <inheritdoc/>
         public virtual IdentityResult Create(IIdentityUser user, byte[] password)
@@ -177,12 +163,6 @@ namespace nanoFramework.Hosting.Identity
         }
 
         /// <inheritdoc/>
-        public virtual bool CheckPassword(IIdentityUser user, string password)
-        {
-            return CheckPassword(user, Encoding.UTF8.GetBytes(password));
-        }
-
-        /// <inheritdoc/>
         public virtual bool CheckPassword(IIdentityUser user, byte[] password)
         {
             var validate = VerifyPassword(user, password);
@@ -196,12 +176,6 @@ namespace nanoFramework.Hosting.Identity
         }
 
         /// <inheritdoc/>
-        public virtual IdentityResult VerifyPassword(IIdentityUser user, string password)
-        {
-            return VerifyPassword(user, Encoding.UTF8.GetBytes(password));
-        }
-
-        /// <inheritdoc/>
         public virtual IdentityResult VerifyPassword(IIdentityUser user, byte[] password)
         {
             var hash = _userStore.GetPasswordHash(user);
@@ -212,12 +186,6 @@ namespace nanoFramework.Hosting.Identity
             }
 
             return PasswordHasher.VerifyHashedPassword(user, hash, password);
-        }
-
-        /// <inheritdoc/>
-        public virtual IdentityResult UpdatePassword(IIdentityUser user, string newPassword)
-        {
-            return UpdatePassword(user, Encoding.UTF8.GetBytes(newPassword), true);
         }
 
         /// <inheritdoc/>

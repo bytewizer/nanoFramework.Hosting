@@ -54,6 +54,7 @@
     <ProjectReference Include="..\..\..\..\nanoFramework.DependencyInjection\nanoFramework.DependencyInjection\nanoFramework.DependencyInjection.nfproj" />
     <ProjectReference Include="..\..\..\nanoFramework.Hosting.Configuration\nanoFramework.Hosting.Configuration.nfproj" />
     <ProjectReference Include="..\..\..\nanoFramework.Hosting.HostApplication\nanoFramework.Hosting.HostApplication.nfproj" />
+    <ProjectReference Include="..\..\..\nanoFramework.Hosting.Identity\nanoFramework.Hosting.Identity.nfproj" />
     <ProjectReference Include="..\..\..\nanoFramework.Hosting.Logging.Abstractions\nanoFramework.Hosting.Logging.Abstractions.nfproj" />
     <ProjectReference Include="..\..\..\nanoFramework.Hosting.Logging\nanoFramework.Hosting.Logging.nfproj" />
     <ProjectReference Include="..\..\..\nanoFramework.Hosting.Pipeline\nanoFramework.Hosting.Pipeline.nfproj" />

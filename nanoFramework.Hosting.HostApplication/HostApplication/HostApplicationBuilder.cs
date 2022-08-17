@@ -37,6 +37,7 @@ namespace nanoFramework.Hosting
                 _hostBuilder.ConfigureServices(services =>
                 {
                     services.AddLogging();
+                    services
                     services.AddThreadPool();
                 });
             }

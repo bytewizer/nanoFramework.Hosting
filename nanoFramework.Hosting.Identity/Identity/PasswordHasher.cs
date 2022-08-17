@@ -13,6 +13,8 @@ namespace nanoFramework.Hosting.Identity
     /// </summary>
     public class PasswordHasher : IPasswordHasher
     {
+        private readonly Random _random = new Random();
+        
         /// <summary>
         /// Returns a hashed representation of the supplied <paramref name="password"/> for the specified <paramref name="user"/>.
         /// </summary>
@@ -21,10 +23,8 @@ namespace nanoFramework.Hosting.Identity
         /// <returns>A hashed representation of the supplied <paramref name="password"/> for the specified <paramref name="user"/>.</returns>
         public byte[] HashPassword(IIdentityUser user, byte[] password)
         {
-            Random rnd = new Random();
-
             var key  = new byte[32];
-            rnd.NextBytes(key);
+            _random.NextBytes(key);
             
             var bytes = new byte[key.Length + password.Length];
             Array.Copy(key, 0, bytes, 0, key.Length);
@@ -47,17 +47,17 @@ namespace nanoFramework.Hosting.Identity
         {
             if (user == null)
             {
-                throw new ArgumentNullException(nameof(user));
+                throw new ArgumentNullException();
             }
 
             if (hashedPassword == null)
             {
-                throw new ArgumentNullException(nameof(hashedPassword));
+                throw new ArgumentNullException();
             }
 
             if (providedPassword == null)
             {
-                throw new ArgumentNullException(nameof(providedPassword));
+                throw new ArgumentNullException();
             }
 
             try
@@ -83,31 +83,23 @@ namespace nanoFramework.Hosting.Identity
         {
             if (hashedPassword.Length < 1 || password.Length < 1)
             {
-                return false; // bad size
+                return false;
             }
 
-            return ByteArraysEqual(hashedPassword, password);
-        }
-
-        private static bool ByteArraysEqual(byte[] a, byte[] b)
-        {
-            if (a == null && b == null)
-            {
-                return true;
-            }
-
-            if (a == null || b == null || a.Length != b.Length)
+            if (hashedPassword.Length != password.Length)
             {
                 return false;
             }
 
-            var isSame = true;
-            for (var i = 0; i < a.Length; i++)
+            for (var index = 0; index < hashedPassword.Length; index++)
             {
-                isSame &= (a[i] == b[i]);
+                if (hashedPassword[index] != password[index])
+                {
+                    return false;
+                }
             }
 
-            return isSame;
+            return true;
         }
     }
 }

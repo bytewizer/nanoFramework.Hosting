@@ -20,7 +20,7 @@ namespace nanoFramework.Hosting.Identity
         /// <returns>The <see cref="IServiceCollection"/> so that additional calls can be chained.</returns>
         public static IServiceCollection AddIdentity(this IServiceCollection services)
         {
-            return AddIdentity(services, new UserStore(), new PasswordHasher(), null, null);
+            return AddIdentity(services, new PasswordHasher(), null, null);
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace nanoFramework.Hosting.Identity
         /// <param name="user">The user whose password should be verified.</param>
         /// <param name="password">The password to verify.</param>
         /// <returns>The <see cref="IServiceCollection"/> so that additional calls can be chained.</returns>
-        public static IServiceCollection AddIdentity(this IServiceCollection services, string user, string password)
+        public static IServiceCollection AddIdentity(this IServiceCollection services, string user, byte[] password)
         {
             return AddIdentity(services, new IdentityUser(user), password);
         }
@@ -39,12 +39,11 @@ namespace nanoFramework.Hosting.Identity
         /// Adds identity services to the specified <see cref="IServiceCollection" />.
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection" /> to add services to.</param>
-        /// <param name="userStore">The password hashing implementation to use when saving passwords.</param>
-        /// <param name="passwordHasher">The persistence store of users.</param>
+        /// <param name="passwordHasher">The password hashing implementation to use when saving passwords.</param>
         /// <returns>The <see cref="IServiceCollection"/> so that additional calls can be chained.</returns>
-        public static IServiceCollection AddIdentity(this IServiceCollection services, UserStore userStore, IPasswordHasher passwordHasher)
+        public static IServiceCollection AddIdentity(this IServiceCollection services, IPasswordHasher passwordHasher)
         {
-            return AddIdentity(services, userStore, passwordHasher, null, null);
+            return AddIdentity(services, passwordHasher, null, null);
         }
 
         /// <summary>
@@ -54,28 +53,27 @@ namespace nanoFramework.Hosting.Identity
         /// <param name="user">The user whose password should be verified.</param>
         /// <param name="password">The password to verify.</param>
         /// <returns>The <see cref="IServiceCollection"/> so that additional calls can be chained.</returns>
-        public static IServiceCollection AddIdentity(this IServiceCollection services, IIdentityUser user, string password)
+        public static IServiceCollection AddIdentity(this IServiceCollection services, IIdentityUser user, byte[] password)
         {
-            return AddIdentity(services, new UserStore(), new PasswordHasher(), user, password);
+            return AddIdentity(services, new PasswordHasher(), user, password);
         }
 
         /// <summary>
         /// Adds identity services to the specified <see cref="IServiceCollection" />.
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection" /> to add services to.</param>
-        /// <param name="userStore">The password hashing implementation to use when saving passwords.</param>
-        /// <param name="passwordHasher">The persistence store of users.</param>
+        /// <param name="passwordHasher">The password hashing implementation to use when saving passwords.</param>
         /// <param name="user">The user whose password should be verified.</param>
         /// <param name="password">The password to verify.</param>
         /// <returns>The <see cref="IServiceCollection"/> so that additional calls can be chained.</returns>
-        public static IServiceCollection AddIdentity(this IServiceCollection services, UserStore userStore, IPasswordHasher passwordHasher, IIdentityUser user, string password)
+        public static IServiceCollection AddIdentity(this IServiceCollection services, IPasswordHasher passwordHasher, IIdentityUser user, byte[] password)
         {
             if (services == null)
             {
                 throw new ArgumentNullException();
             }
 
-            var identityProvider = new IdentityProvider(userStore, passwordHasher);
+            var identityProvider = new IdentityProvider(passwordHasher);
 
             if (user != null || password != null)
             {

@@ -6,7 +6,8 @@ using nanoFramework.Hosting;
 using System;
 using System.Diagnostics;
 using System.Net.NetworkInformation;
-
+using nanoFramework.Hosting.Identity;
+using System.Text;
 
 namespace nanoFramework.TestHarness
 {
@@ -16,21 +17,51 @@ namespace nanoFramework.TestHarness
     {
         public static void Main()
         {
-            var builder = HostApplication.CreateBuilder();
-            builder.Logging.AddDebug();
+            string username = "b.smith";
+            byte[] password = Encoding.UTF8.GetBytes("password");
+
+            var host = Host.CreateDefaultBuilder()
+                .ConfigureServices(services =>
+                {
+                    services.AddIdentity(username, password);
+                })
+                .ConfigureIdentity(provider => 
+                {
+                    var user = provider.FindByName(username);
+                    provider.UpdatePassword(user, Encoding.UTF8.GetBytes("password2"), true);
+                }).Build();
             
-            var app = builder.Build();
-            app.Run();
+            var identityProvider = (IdentityProvider)host.Services.GetRequiredService(typeof(IIdentityProvider));
 
-            //SetupWifi();
+            var user = identityProvider.FindByName(username);
 
-            var serviceProvider = new ServiceCollection()
-            .AddLogging(builder =>
-            {
-                builder.AddDebug();
-                builder.SetMinimumLevel(LogLevel.Information);
-            })
-            .BuildServiceProvider();
+            Debug.WriteLine(user.UserName);
+            Debug.WriteLine(identityProvider.VerifyPassword(user, Encoding.UTF8.GetBytes("password2")).Succeeded.ToString());
+
+            //var serviceProvider = new ServiceCollection()
+            //.AddLogging(builder =>
+            //{
+            //    builder.AddDebug();
+            //    builder.SetMinimumLevel(LogLevel.Information);
+            //})
+            //.BuildServiceProvider();
+
+
+            //var builder = HostApplication.CreateBuilder();
+            //builder.Logging.AddDebug();
+
+            //var app = builder.Build();
+            //app.Run();
+
+            ////SetupWifi();
+
+            //var serviceProvider = new ServiceCollection()
+            //.AddLogging(builder =>
+            //{
+            //    builder.AddDebug();
+            //    builder.SetMinimumLevel(LogLevel.Information);
+            //})
+            //.BuildServiceProvider();
 
             //var loggerFactory = (ILoggerFactory)serviceProvider.GetRequiredService(typeof(ILoggerFactory));
             //var logger = loggerFactory.CreateLogger("name");

@@ -32,10 +32,10 @@ namespace nanoFramework.TestHarness
                 builder.AddDebug();
                 builder.SetMinimumLevel(LogLevel.Information);
             })
-            .AddSocketServer((options, pipeline) => 
+            .AddSocketServer((options) => 
             {
                 options.Listen(80);
-                pipeline.UseHttpResponse();
+                //pipeline.UseHttpResponse();
             })
             .BuildServiceProvider();
 

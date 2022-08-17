@@ -27,6 +27,8 @@ Project("{11A8DD76-328B-46DF-9F39-F559912D0360}") = "nanoFramework.Hosting.HostA
 EndProject
 Project("{11A8DD76-328B-46DF-9F39-F559912D0360}") = "nanoFramework.LoggingHarness", "nanoFramework.LoggingHarness\nanoFramework.LoggingHarness.nfproj", "{91959551-FB9B-4786-AA6B-A6E01B08FB23}"
 EndProject
+Project("{11A8DD76-328B-46DF-9F39-F559912D0360}") = "nanoFramework.Hosting.Identity", "..\..\nanoFramework.Hosting.Identity\nanoFramework.Hosting.Identity.nfproj", "{20121C4F-7071-48E2-BA45-10EA739CA7D3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,6 +107,12 @@ Global
 		{91959551-FB9B-4786-AA6B-A6E01B08FB23}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91959551-FB9B-4786-AA6B-A6E01B08FB23}.Release|Any CPU.Build.0 = Release|Any CPU
 		{91959551-FB9B-4786-AA6B-A6E01B08FB23}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{20121C4F-7071-48E2-BA45-10EA739CA7D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20121C4F-7071-48E2-BA45-10EA739CA7D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20121C4F-7071-48E2-BA45-10EA739CA7D3}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{20121C4F-7071-48E2-BA45-10EA739CA7D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20121C4F-7071-48E2-BA45-10EA739CA7D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20121C4F-7071-48E2-BA45-10EA739CA7D3}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
